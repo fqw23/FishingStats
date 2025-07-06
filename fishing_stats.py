@@ -84,14 +84,14 @@ def main():
             x.loc[idx,'BiggestFishCatcher']=filtered_data.loc[index1,'User']
             index2=row['FirstFishCatcherIndex']
             x.loc[idx,'FirstFishCatcher']=filtered_data.loc[index2,'User']
-        x=x.rename(columns={'fishname':'Fish'})
-        x=x.drop(columns=['BiggestFishCatcherIndex','FirstFishCatcherIndex']).reset_index()
+        x=x.rename(columns={'fishname':'Fish'}).reset_index()
+        x=x.drop(columns=['BiggestFishCatcherIndex','FirstFishCatcherIndex','index'])
         if st.button('Check Stats'):
             #x=x.drop(columns=['rating','date','time','Reset Date','index'])
             st.dataframe(x)
     elif choice0=='Catch':
         if st.button('Check Stats'):
-            x=x.drop(columns=['rating','date','time','Reset Date','index']).reset_index()
+            x=x.drop(columns=['rating','date','time','Reset Date','index'])
             st.dataframe(x)
 
 if __name__=='__main__':
