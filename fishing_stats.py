@@ -40,6 +40,13 @@ def main():
     max_coins=max(filtered_data['value'].astype(int))
     start_coins,end_coins=st.slider('Fish Coin:',min_value=1,max_value=max_coins,value=(1,max_coins))
     filtered_data=filtered_data[(filtered_data['value']>=start_coins)&(filtered_data['value']<=end_coins)]
+    if choiceuser:
+        filtered_data=filtered_data[filtered_data['username'].isin(choiceuser)]
+    choicefish=st.multiselect("Pick Fish:",filtered_data['fishname'].unique())
+    if choicefish:
+        filtered_data=filtered_data[filtered_data['fishname'].isin(choicefish)]
+    choice0=st.selectbox('GroupBy:',['User','Fish','Catch'])
+
     choice0=st.selectbox('GroupBy:',['User','Fish','Catch'])
 
     filtered_data=filtered_data.rename(columns={'username':'User'})
@@ -67,28 +74,41 @@ def main():
             x=x.drop(columns=['BiggestCatchIndex','HeaviestCatchIndex'])
             st.dataframe(x)
     elif choice0=='Fish':
-        x=filtered_data.groupby(['fishname']).agg(
-            TotalCatches=('fishname','count'),
-            BiggestCatch=('value','max'),
-            HeaviestCatch=('weight','max'),
-            UniqueCatchers=('User',lambda x:x.nunique()),
-            FirstCatch=('DateTime','min'),
-            FirstFishCatcherIndex=('DateTime','idxmin'),
-            BiggestFishCatcherIndex=('weight','idxmax'),
-        ).reset_index()
-        x=x.sort_values(by='TotalCatches',ascending=False)
-        x['BiggestFishCatcher']=""
-        x['FirstFishCatcher']=""
-        for idx,row in x.iterrows():
-            index1=row['BiggestFishCatcherIndex']
-            x.loc[idx,'BiggestFishCatcher']=filtered_data.loc[index1,'User']
-            index2=row['FirstFishCatcherIndex']
-            x.loc[idx,'FirstFishCatcher']=filtered_data.loc[index2,'User']
-        x=x.rename(columns={'fishname':'Fish'}).reset_index()
-        x=x.drop(columns=['BiggestFishCatcherIndex','FirstFishCatcherIndex','index'])
+        choicemissing=False
+        if choiceuser:
+            choicemissing=st.checkbox("Show Missing",value=False)
+        if choicemissing:
+            unique_x=set(filtered_data['fishname'].unique())
+            unique_y=set(data['fishname'].unique())
+            missing=unique_y-unique_x
+            missing_rows=data[data['fishname'].isin(missing)]
+            result=(missing_rows.sort_values('rarity')).groupby('fishname').agg({'category':'last','rarity':'last'}).reset_index()
+        else:
+            x=filtered_data.groupby(['fishname']).agg(
+                TotalCatches=('fishname','count'),
+                BiggestCatch=('value','max'),
+                HeaviestCatch=('weight','max'),
+                UniqueCatchers=('User',lambda x:x.nunique()),
+                FirstCatch=('DateTime','min'),
+                FirstFishCatcherIndex=('DateTime','idxmin'),
+                BiggestFishCatcherIndex=('weight','idxmax'),
+            ).reset_index()
+            x=x.sort_values(by='TotalCatches',ascending=False)
+            x['BiggestFishCatcher']=""
+            x['FirstFishCatcher']=""
+            for idx,row in x.iterrows():
+                index1=row['BiggestFishCatcherIndex']
+                x.loc[idx,'BiggestFishCatcher']=filtered_data.loc[index1,'User']
+                index2=row['FirstFishCatcherIndex']
+                x.loc[idx,'FirstFishCatcher']=filtered_data.loc[index2,'User']
+            x=x.rename(columns={'fishname':'Fish'}).reset_index()
+            x=x.drop(columns=['BiggestFishCatcherIndex','FirstFishCatcherIndex','index'])
         if st.button('Check Stats'):
+            if choicemissing:
+                st.dataframe(result)
             #x=x.drop(columns=['rating','date','time','Reset Date','index'])
-            st.dataframe(x)
+            else:
+                st.dataframe(x)
     elif choice0=='Catch':
         if st.button('Check Stats'):
             x=x.drop(columns=['rating','date','time','Reset Date','index'])
