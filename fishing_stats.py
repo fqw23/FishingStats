@@ -40,13 +40,13 @@ def main():
     max_coins=max(filtered_data['value'].astype(int))
     start_coins,end_coins=st.slider('Fish Coin:',min_value=1,max_value=max_coins,value=(1,max_coins))
     filtered_data=filtered_data[(filtered_data['value']>=start_coins)&(filtered_data['value']<=end_coins)]
+    choiceuser=st.multiselect("Pick User:",filtered_data['username'].unique())
+
     if choiceuser:
         filtered_data=filtered_data[filtered_data['username'].isin(choiceuser)]
     choicefish=st.multiselect("Pick Fish:",filtered_data['fishname'].unique())
     if choicefish:
         filtered_data=filtered_data[filtered_data['fishname'].isin(choicefish)]
-    choice0=st.selectbox('GroupBy:',['User','Fish','Catch'])
-
     choice0=st.selectbox('GroupBy:',['User','Fish','Catch'])
 
     filtered_data=filtered_data.rename(columns={'username':'User'})
@@ -106,8 +106,9 @@ def main():
         if st.button('Check Stats'):
             if choicemissing:
                 st.dataframe(result)
-            #x=x.drop(columns=['rating','date','time','Reset Date','index'])
             else:
+                if choiceuser:
+                    x=x.drop(columns=['BiggestFishCatcher','FirstFishCatcher','UniqueCatchers'])
                 st.dataframe(x)
     elif choice0=='Catch':
         if st.button('Check Stats'):
