@@ -81,6 +81,10 @@ def main():
             missing=unique_y-unique_x
             missing_rows=data[data['FishName'].isin(missing)]
             result=(missing_rows.sort_values('Rarity')).groupby('FishName').agg({'Category':'last','Rarity':'last'}).reset_index()
+            if choicefishrarity:
+                result=result[result['Rarity'].isin(choicefishrarity)]
+            if choicefishtype:
+                result=result[result['Category'].isin(choicefishtype)]        
         else:
             x=filtered_data.groupby(['FishName']).agg(
                 TotalCatches=('FishName','count'),
