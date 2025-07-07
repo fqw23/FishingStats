@@ -6,7 +6,10 @@ def main():
     st.title('ChattyKathy Fishing Stats')
     data1=pd.read_csv('FishingLog.csv',low_memory=False)
     data2=pd.read_csv("https://www.dropbox.com/scl/fi/zhop5outw301q2pfjwrl1/FishingLogUpdated.txt?rlkey=ush67h3eqhdt1geoq0e8mvppf&st=2zuiqwmu&dl=1",header=0,skiprows=range(1,11005),low_memory=False)
-    data=pd.concat([data1,data2],ignore_index=True)
+    data2.loc[data2['FishName']=='Pickle','FishName']='Big Mamma Pickle'
+    data2.loc[data2['FishName']=='Keys','FishName']='Some Keys'
+    data2.loc[data2['FishName']=='Henrys Shoe','FishName']="Henry's Shoe"
+    data2.loc[data2['FishName']=='Fish Drawing','FishName']='Weird Drawing of a Fish?'data=pd.concat([data1,data2],ignore_index=True)
     choicereset=st.multiselect('ResetDate:',data['ResetDate'].unique())
     filtered_data=data
     if choicereset:
