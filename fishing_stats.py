@@ -124,6 +124,7 @@ def main():
         x=x.drop(columns=['Rating','Date','Time','ResetDate','index'])
         x=x.reindex(index=data.index[::-1])
         x=x.rename(columns={'FishName':'Fish'})
+        x=x.loc[:,['Fish','User','Gold','Weight','Rarity','Category','DateTime','IsNew']]
         st.dataframe(x)
 
 if __name__=='__main__':
