@@ -42,6 +42,7 @@ def main():
         st.error('Error: End date must be greater than start date.')
     else:
         filtered_data=filtered_data[(filtered_data['DateTime']>=start_date) &(filtered_data['DateTime']<=end_date)]
+    choicefishtype=st.multiselect("Pick Fish Category:",sorted(filtered_data['Category'].unique()))
     if choicefishtype:
         filtered_data=filtered_data[filtered_data['Category'].isin(choicefishtype)]
     choicefishrarity=st.multiselect("Pick Fish Rarity:",pd.Series(['Junk','Common','Uncommon','Rare','Epic','Legendary']))
