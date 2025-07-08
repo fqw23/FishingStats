@@ -33,10 +33,10 @@ def main():
     end_date=st.date_input("End Date",min_value=min_dt,max_value=max_dt,value=max_dt)
     if start_date > end_date:
         st.error('Error: End date must be greater than start date.')
-    choicefishtype=st.multiselect("Pick Fish Category:",filtered_data['Category'].unique())
+    choicefishtype=st.multiselect("Pick Fish Category:",sorted(filtered_data['Category'].unique()))
     if choicefishtype:
         filtered_data=filtered_data[filtered_data['Category'].isin(choicefishtype)]
-    choicefishrarity=st.multiselect("Pick Fish Rarity:",filtered_data['Rarity'].unique())
+    choicefishrarity=st.multiselect("Pick Fish Rarity:",pd.Series(['Junk','Common','Uncommon','Rare','Epic','Legendary']))
     if choicefishrarity:
         filtered_data=filtered_data[filtered_data['Rarity'].isin(choicefishrarity)]
     max_weight=max(filtered_data['Weight'].astype(float))
@@ -46,14 +46,14 @@ def main():
     max_coins=max(filtered_data['Value'].astype(int))
     start_coins,end_coins=st.slider('Fish Gold:',min_value=1,max_value=max_coins,value=(1,max_coins))
     filtered_data=filtered_data[(filtered_data['Value']>=start_coins)&(filtered_data['Value']<=end_coins)]
-    choiceuser=st.multiselect("Pick User:",filtered_data['Username'].unique())
+    choiceuser=st.multiselect("Pick User:",sorted(filtered_data['Username'].unique()))
 
     if choiceuser:
         filtered_data=filtered_data[filtered_data['Username'].isin(choiceuser)]
-    choicefish=st.multiselect("Pick Fish:",filtered_data['FishName'].unique())
+    choicefish=st.multiselect("Pick Fish:",sorted(filtered_data['FishName'].unique()))
     if choicefish:
         filtered_data=filtered_data[filtered_data['FishName'].isin(choicefish)]
-    choice0=st.selectbox('GroupBy:',['User','Fish','Catch'])
+    choice0=st.selectbox('GroupBy:',['Catch','Fish','User'])
 
     filtered_data=filtered_data.rename(columns={'Username':'User','Value':'Gold'})
     x=filtered_data.reset_index()
@@ -94,7 +94,7 @@ def main():
             if choicefishtype:
                 result=result[result['Category'].isin(choicefishtype)]        
         else:
-            x=filtered_data.groupby(['FishName']).agg(
+            x=filtered_data.groupby(['FishName','Category']).agg(
                 TotalCatches=('FishName','count'),
                 BiggestCatch=('Gold','max'),
                 HeaviestCatch=('Weight','max'),
@@ -121,9 +121,10 @@ def main():
                     x=x.drop(columns=['BiggestFishCatcher','FirstFishCatcher','UniqueCatchers'])
                 st.dataframe(x)
     elif choice0=='Catch':
-        if st.button('Check Stats'):
-            x=x.drop(columns=['Rating','Date','Time','ResetDate','index'])
-            st.dataframe(x)
+        x=x.drop(columns=['Rating','Date','Time','ResetDate','index'])
+        x=x.reindex(index=data.index[::-1])
+        x=x.rename(columns={'FishName':'Fish'})
+        st.dataframe(x)
 
 if __name__=='__main__':
     main()
