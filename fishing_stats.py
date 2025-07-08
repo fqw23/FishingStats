@@ -122,7 +122,7 @@ def main():
                 st.dataframe(x)
     elif choice0=='Catch':
         x=x.drop(columns=['Rating','Date','Time','ResetDate','index'])
-        x=x.reindex(index=data.index[::-1])
+        x=x.reindex(index=x.index[::-1])
         x=x.rename(columns={'FishName':'Fish'})
         x=x.loc[:,['Fish','User','Gold','Weight','Rarity','Category','DateTime','IsNew']]
         st.dataframe(x)
