@@ -2,7 +2,7 @@ import math
 import pandas as pd
 import streamlit as st
 import datetime
-@st.cache_data
+@st.cache_data(ttl=60)
 def load_data(filename, **kwargs):
     return pd.read_csv(filename, **kwargs)
 
