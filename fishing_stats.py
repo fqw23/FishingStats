@@ -21,10 +21,10 @@ def main():
         data2=pd.DataFrame()
     if not data2.empty:
         data=pd.concat([data,data2],ignore_index=True)
-    choicereset=st.multiselect('ResetDate:',data['ResetDate'].unique())
+    #choicereset=st.multiselect('ResetDate:',data['ResetDate'].unique())
     filtered_data=data
-    if choicereset:
-        filtered_data=filtered_data[filtered_data['ResetDate'].isin(choicereset)]
+    #if choicereset:
+    #    filtered_data=filtered_data[filtered_data['ResetDate'].isin(choicereset)]
     #filtered_data['date']=pd.to_datetime(data['date'],errors='coerce',yearfirst=True)
     #filtered_data.loc[:,'DateTime']=pd.to_datetime(filtered_data['DateTime'], format="%m/%d/%Y %I:%M:%S %p",errors='coerce').dt.tz_localize("UTC")
     filtered_data.loc[:,'DateTime']=pd.to_datetime(filtered_data['DateTime'], dayfirst=False,errors='coerce').dt.tz_localize("UTC")
