@@ -26,7 +26,8 @@ def main():
     if choicereset:
         filtered_data=filtered_data[filtered_data['ResetDate'].isin(choicereset)]
     #filtered_data['date']=pd.to_datetime(data['date'],errors='coerce',yearfirst=True)
-    filtered_data.loc[:,'DateTime']=pd.to_datetime(filtered_data['DateTime'], format="%m/%d/%Y %I:%M:%S %p",errors='coerce').dt.tz_localize("UTC")
+    #filtered_data.loc[:,'DateTime']=pd.to_datetime(filtered_data['DateTime'], format="%m/%d/%Y %I:%M:%S %p",errors='coerce').dt.tz_localize("UTC")
+    filtered_data.loc[:,'DateTime']=pd.to_datetime(filtered_data['DateTime'], dayfirst=False,errors='coerce').dt.tz_localize("UTC")
     #print(filtered_data[filtered_data['date']=='NaT'])
     valid_dates=filtered_data['DateTime'].dropna()
     if not valid_dates.empty:
