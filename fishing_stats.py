@@ -9,18 +9,18 @@ def load_data(filename, **kwargs):
 
 def main():
     st.title('ChattyKathy Fishing Stats')
-    data=load_data('FishingLog.csv',low_memory=False)
+    #data=load_data('FishingLog.csv',low_memory=False)
     try:
-        data2=load_data("https://www.dropbox.com/scl/fi/zhop5outw301q2pfjwrl1/FishingLogUpdated.txt?rlkey=ush67h3eqhdt1geoq0e8mvppf&st=2zuiqwmu&dl=1",header=0,skiprows=range(1,11005),low_memory=False)
-        data2.loc[data2['FishName']=='Pickle','FishName']='Big Mamma Pickle'
-        data2.loc[data2['FishName']=='Keys','FishName']='Some Keys'
-        data2.loc[data2['FishName']=='Henrys Shoe','FishName']="Henry's Shoe"
-        data2.loc[data2['FishName']=='Fish Drawing','FishName']='Weird Drawing of a Fish?'
+        data=load_data("https://www.dropbox.com/scl/fi/zhop5outw301q2pfjwrl1/FishingLogUpdated.txt?rlkey=ush67h3eqhdt1geoq0e8mvppf&st=2zuiqwmu&dl=1",low_memory=False)
+        data.loc[data2['FishName']=='Pickle','FishName']='Big Mamma Pickle'
+        data.loc[data2['FishName']=='Keys','FishName']='Some Keys'
+        data.loc[data2['FishName']=='Henrys Shoe','FishName']="Henry's Shoe"
+        data.loc[data2['FishName']=='Fish Drawing','FishName']='Weird Drawing of a Fish?'
     except pd.errors.EmptyDataError:
         print("Not Enough rows")
-        data2=pd.DataFrame()
-    if not data2.empty:
-        data=pd.concat([data,data2],ignore_index=True)
+        data=load_data('FishingLog.csv',low_memory=False)#pd.DataFrame()
+    #if not data2.empty:
+    #    data=pd.concat([data,data2],ignore_index=True)
     #choicereset=st.multiselect('ResetDate:',data['ResetDate'].unique())
     filtered_data=data
     #if choicereset:
