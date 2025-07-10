@@ -12,10 +12,10 @@ def main():
     #data=load_data('FishingLog.csv',low_memory=False)
     try:
         data=load_data("https://www.dropbox.com/scl/fi/zhop5outw301q2pfjwrl1/FishingLogUpdated.txt?rlkey=ush67h3eqhdt1geoq0e8mvppf&st=2zuiqwmu&dl=1",low_memory=False)
-        data.loc[data2['FishName']=='Pickle','FishName']='Big Mamma Pickle'
-        data.loc[data2['FishName']=='Keys','FishName']='Some Keys'
-        data.loc[data2['FishName']=='Henrys Shoe','FishName']="Henry's Shoe"
-        data.loc[data2['FishName']=='Fish Drawing','FishName']='Weird Drawing of a Fish?'
+        data.loc[data['FishName']=='Pickle','FishName']='Big Mamma Pickle'
+        data.loc[data['FishName']=='Keys','FishName']='Some Keys'
+        data.loc[data['FishName']=='Henrys Shoe','FishName']="Henry's Shoe"
+        data.loc[data['FishName']=='Fish Drawing','FishName']='Weird Drawing of a Fish?'
     except pd.errors.EmptyDataError:
         print("Not Enough rows")
         data=load_data('FishingLog.csv',low_memory=False)#pd.DataFrame()
