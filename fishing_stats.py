@@ -22,6 +22,7 @@ def main():
     #if not data2.empty:
     #    data=pd.concat([data,data2],ignore_index=True)
     #choicereset=st.multiselect('ResetDate:',data['ResetDate'].unique())
+    data['Username']=data['Username'].str.lower()
     filtered_data=data
     #if choicereset:
     #    filtered_data=filtered_data[filtered_data['ResetDate'].isin(choicereset)]
