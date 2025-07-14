@@ -132,7 +132,7 @@ def main():
                     x=x.drop(columns=['BiggestFishCatcher','FirstFishCatcher','UniqueCatchers'])
                 st.dataframe(x)
     elif choice0=='Catch':
-        x=x.drop(columns=['Rating','Date','Time','ResetDate','index']).reset_index()
+        x=x.drop(columns=['Rating','ResetDate','index']).reset_index()
         x=x.reindex(index=x.index[::-1])
         x=x.rename(columns={'FishName':'Fish'})
         x=x.loc[:,['Fish','User','Gold','Weight','Rarity','Category','DateTime','IsNew']]
