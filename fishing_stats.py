@@ -37,9 +37,9 @@ def main():
     else:
         min_dt=datetime.date(2024,1,1)
         max_dt=datetime.date(2034,1,1)
-    start_date=pd.Timestamp(st.date_input("Start Date",min_value=min_dt,max_value=max_dt,value=min_dt)).tz_localize('UTC')
+    start_date=pd.Timestamp(st.date_input("Start Date",min_value=min_dt,max_value=max_dt,value=min_dt)).tz_localize('US/Eastern')
     end_date=pd.Timestamp(st.date_input("End Date",min_value=min_dt,max_value=max_dt,value=max_dt))+ pd.Timedelta(days=1)
-    end_date=end_date.tz_localize('UTC')
+    end_date=end_date.tz_localize('US/Eastern')
     if start_date > end_date:
         st.error('Error: End date must be greater than start date.')
     else:
